@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics, permissions
 from .models import Algorithm, Tutorial, Game, Progress, GameAttempt
+from django.shortcuts import render
 from .serializers import (
     AlgorithmSerializer,
     TutorialSerializer,
@@ -57,3 +58,17 @@ class GameAttemptListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 # Create your views here.
+def index(request):
+    return render(request, 'pages/index.html')
+
+def algorithms(request):
+    return render(request, 'pages/algorithms.html')
+
+def tutorials(request):
+    return render(request, 'pages/tutorials.html')
+
+def games(request):
+    return render(request, 'pages/games.html')
+
+def login_view(request):
+    return render(request, 'pages/login.html')

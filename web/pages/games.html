@@ -1,19 +1,23 @@
+{% load static %}
 <!doctype html>
 <html lang="vi">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trò chơi - SPNC</title>
-  <link rel="stylesheet" href="../styles.css">
+
+  <!-- ✅ Dùng static cho CSS -->
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
   <header class="site-header">
     <div class="container row between center">
-      <a class="logo nav-link" href="../index.html">← SPNC</a>
+      <a class="logo nav-link" href="{% url 'index' %}">← SPNC</a>
       <nav class="nav">
-        <a href="algorithms.html" class="nav-link">Thuật toán</a>
-        <a href="tutorials.html" class="nav-link">Hướng dẫn</a>
-        <a href="games.html" class="nav-link active">Trò chơi</a>
+        <!-- ✅ Liên kết giữa các trang bằng tên view -->
+        <a href="{% url 'algorithms' %}" class="nav-link">Thuật toán</a>
+        <a href="{% url 'tutorials' %}" class="nav-link">Hướng dẫn</a>
+        <a href="{% url 'games' %}" class="nav-link active">Trò chơi</a>
       </nav>
     </div>
   </header>
@@ -23,8 +27,10 @@
     <div id="list" class="grid"></div>
   </main>
 
-  <script src="../js/api.js"></script>
-  <script src="../js/data.js"></script>
+  <!-- ✅ Dùng static cho JS -->
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+
   <script>
     const list = document.getElementById('list');
     (async () => {
@@ -34,7 +40,7 @@
           <article class="card">
             <div class="badge">Thuật toán #${g.algo_id}</div>
             <h4>Game #${g.id}</h4>
-            <p>${g.description||''}</p>
+            <p>${g.description || ''}</p>
             <button class="btn" onclick="record(${g.id})">Chơi thử</button>
           </article>
         `).join('');
@@ -52,10 +58,15 @@
     })();
 
     async function record(gameId){
-      try{
-        await window.API.apiFetch('/attempts/', {method:'POST', body: JSON.stringify({game_id: gameId, score: 10, time_spent: 30})});
+      try {
+        await window.API.apiFetch('/attempts/', {
+          method: 'POST',
+          body: JSON.stringify({ game_id: gameId, score: 10, time_spent: 30 })
+        });
         alert('Đã ghi điểm demo (cần đăng nhập).');
-      }catch(e){ alert('Hãy đăng nhập ở Trang Đăng nhập.'); }
+      } catch (e) {
+        alert('Hãy đăng nhập ở Trang Đăng nhập.');
+      }
     }
   </script>
 </body>

@@ -62,10 +62,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'spnc_backend.urls'
 
+import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.parent / 'web'],
+        'DIRS': [os.path.join(BASE_DIR, '..', 'web', 'pages')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

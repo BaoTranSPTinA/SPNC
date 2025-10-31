@@ -20,16 +20,17 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from core import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('core.urls')),
-    path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Trang chủ web tĩnh (index.html)
-    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('algorithms/', TemplateView.as_view(template_name='algorithms.html'), name='algorithms'),
+    path('tutorials/', TemplateView.as_view(template_name='tutorials.html'), name='tutorials'),
+    path('games/', TemplateView.as_view(template_name='games.html'), name='games'),
+    path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
 ]
 
 if settings.DEBUG:

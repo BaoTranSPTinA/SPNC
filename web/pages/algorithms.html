@@ -1,19 +1,24 @@
+{% load static %}
 <!doctype html>
 <html lang="vi">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Thuật toán - SPNC</title>
-  <link rel="stylesheet" href="../styles.css">
+
+  <!-- ✅ Sử dụng static cho CSS -->
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
+
 <body>
   <header class="site-header">
     <div class="container row between center">
-      <a class="logo nav-link" href="../index.html">← SPNC</a>
+      <!-- ✅ Sửa lại link về index -->
+      <a class="logo nav-link" href="{% url 'index' %}">← SPNC</a>
       <nav class="nav">
-        <a href="algorithms.html" class="nav-link active">Thuật toán</a>
-        <a href="tutorials.html" class="nav-link">Hướng dẫn</a>
-        <a href="games.html" class="nav-link">Trò chơi</a>
+        <a href="{% url 'algorithms' %}" class="nav-link active">Thuật toán</a>
+        <a href="{% url 'tutorials' %}" class="nav-link">Hướng dẫn</a>
+        <a href="{% url 'games' %}" class="nav-link">Trò chơi</a>
       </nav>
     </div>
   </header>
@@ -23,8 +28,9 @@
     <div id="list" class="grid"></div>
   </main>
 
-  <script src="../js/api.js"></script>
-  <script src="../js/data.js"></script>
+  <!-- ✅ Dùng static cho JS -->
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/data.js' %}"></script>
   <script>
     const list = document.getElementById('list');
     (async () => {
@@ -35,7 +41,7 @@
             <div class="badge">${a.type||''}</div>
             <h4>${a.name}</h4>
             <p>${a.description||''}</p>
-            <a class="btn" href="tutorials.html?algo=${a.id}">Xem hướng dẫn</a>
+            <a class="btn" href="{% url 'tutorials' %}?algo=${a.id}">Xem hướng dẫn</a>
           </article>
         `).join('');
       } catch {
@@ -45,7 +51,7 @@
             <div class="badge">${a.type}</div>
             <h4>${a.name}</h4>
             <p>${a.description}</p>
-            <a class="btn" href="tutorials.html?algo=${a.algo_id}">Xem hướng dẫn</a>
+            <a class="btn" href="{% url 'tutorials' %}?algo=${a.algo_id}">Xem hướng dẫn</a>
           </article>
         `).join('');
       }

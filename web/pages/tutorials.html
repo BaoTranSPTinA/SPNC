@@ -1,19 +1,20 @@
+{% load static %}
 <!doctype html>
 <html lang="vi">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hướng dẫn - SPNC</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
   <header class="site-header">
     <div class="container row between center">
-      <a class="logo nav-link" href="../index.html">← SPNC</a>
+      <a class="logo nav-link" href="{% url 'index' %}">← SPNC</a>
       <nav class="nav">
-        <a href="algorithms.html" class="nav-link">Thuật toán</a>
-        <a href="tutorials.html" class="nav-link active">Hướng dẫn</a>
-        <a href="games.html" class="nav-link">Trò chơi</a>
+        <a href="{% url 'algorithms' %}" class="nav-link">Thuật toán</a>
+        <a href="{% url 'tutorials' %}" class="nav-link active">Hướng dẫn</a>
+        <a href="{% url 'games' %}" class="nav-link">Trò chơi</a>
       </nav>
     </div>
   </header>
@@ -23,20 +24,22 @@
     <div id="list" class="grid"></div>
   </main>
 
-  <script src="../js/api.js"></script>
-  <script src="../js/data.js"></script>
+  <!-- Đường dẫn tĩnh cho JS -->
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+
   <script>
     const params = new URLSearchParams(location.search);
     const algoFilter = params.get('algo');
     const list = document.getElementById('list');
     (async () => {
       try {
-        const items = await window.API.apiFetch(`/tutorials/${algoFilter?`?algo=${algoFilter}`:''}`);
+        const items = await window.API.apiFetch(`/tutorials/${algoFilter ? `?algo=${algoFilter}` : ''}`);
         if (items.length === 0) list.innerHTML = '<p class="card">Chưa có hướng dẫn cho thuật toán này.</p>';
         else list.innerHTML = items.map(t => `
           <article class="card">
             <h4>${t.title}</h4>
-            <p>${t.content||''}</p>
+            <p>${t.content || ''}</p>
           </article>
         `).join('');
       } catch {

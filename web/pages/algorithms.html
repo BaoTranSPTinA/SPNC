@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thuật toán - SPNC</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container row between center">
+      <a class="logo nav-link" href="../index.html">← SPNC</a>
+      <nav class="nav">
+        <a href="algorithms.html" class="nav-link active">Thuật toán</a>
+        <a href="tutorials.html" class="nav-link">Hướng dẫn</a>
+        <a href="games.html" class="nav-link">Trò chơi</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Danh sách Thuật toán</h2>
+    <div id="list" class="grid"></div>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/data.js"></script>
+  <script>
+    const list = document.getElementById('list');
+    (async () => {
+      try {
+        const items = await window.API.apiFetch('/algorithms/');
+        list.innerHTML = items.map(a => `
+          <article id="${a.id}" class="card">
+            <div class="badge">${a.type||''}</div>
+            <h4>${a.name}</h4>
+            <p>${a.description||''}</p>
+            <a class="btn" href="tutorials.html?algo=${a.id}">Xem hướng dẫn</a>
+          </article>
+        `).join('');
+      } catch {
+        const items = window.DB.algorithms; // fallback offline
+        list.innerHTML = items.map(a => `
+          <article id="${a.algo_id}" class="card">
+            <div class="badge">${a.type}</div>
+            <h4>${a.name}</h4>
+            <p>${a.description}</p>
+            <a class="btn" href="tutorials.html?algo=${a.algo_id}">Xem hướng dẫn</a>
+          </article>
+        `).join('');
+      }
+    })();
+  </script>
+</body>
+  
+</html>
+
+

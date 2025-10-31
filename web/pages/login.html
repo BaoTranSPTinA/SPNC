@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng nhập - SPNC</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site-header"><div class="container row between center"><a class="logo nav-link" href="../index.html">← SPNC</a></div></header>
+  <main class="container">
+    <h2>Đăng nhập</h2>
+    <form id="f" class="card" onsubmit="return false;">
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <input id="u" placeholder="Username" style="padding:10px; border-radius:8px; border:1px solid #27315c; background:#0f1531; color:#e7ecf5;">
+        <input id="p" placeholder="Password" type="password" style="padding:10px; border-radius:8px; border:1px solid #27315c; background:#0f1531; color:#e7ecf5;">
+        <button id="btn" class="btn primary">Đăng nhập</button>
+      </div>
+      <p id="msg" style="margin-top:10px;"></p>
+    </form>
+  </main>
+  <script src="../js/api.js"></script>
+  <script>
+    document.getElementById('btn').onclick = async () => {
+      const u = document.getElementById('u').value; const p = document.getElementById('p').value;
+      const msg = document.getElementById('msg');
+      msg.textContent = 'Đang đăng nhập...';
+      try { await window.API.login(u, p); msg.textContent = 'Thành công!'; setTimeout(()=>location.href='../index.html', 600); }
+      catch (e) { msg.textContent = 'Sai thông tin đăng nhập.'; }
+    };
+  </script>
+</body>
+</html>
+
+

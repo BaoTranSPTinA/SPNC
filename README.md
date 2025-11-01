@@ -113,12 +113,13 @@ SPNC/
   │   ├─ spnc_backend/        # settings, root urls
   │   └─ manage.py
   └─ web/
-      ├─ index.html
       ├─ styles.css
       ├─ js/
+          ├─ home.js
       │   ├─ api.js           # tiện ích gọi API + lưu token
       │   └─ data.js          # dữ liệu mẫu (fallback offline)
       └─ pages/
+          ├─ index.html
           ├─ login.html
           ├─ algorithms.html
           ├─ tutorials.html

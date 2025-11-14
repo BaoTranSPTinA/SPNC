@@ -1,0 +1,113 @@
+{% load static %}
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPNC - Học Thuật Toán Qua Trò Chơi</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container row between center">
+      <h1 class="logo">SPNC</h1>
+      <nav class="nav">
+        <a href="{% url 'index' %}" class="nav-link active">Trang chủ</a>
+        <a href="{% url 'algorithms' %}" class="nav-link">Thuật toán</a>
+        <a href="{% url 'tutorials' %}" class="nav-link">Hướng dẫn</a>
+        <a href="{% url 'games' %}" class="nav-link">Trò chơi</a>
+
+        <div id="user-menu" class="row gap center" style="display:none;">
+          <span id="greeting" class="nav-link"></span>
+          <a href="{% url 'profile' %}" class="nav-link">Hồ sơ</a>
+          <button onclick="logout()" class="btn small">Đăng xuất</button>
+        </div>
+
+        <div id="auth-buttons" class="row gap center">
+          <a href="{% url 'login' %}" class="nav-link">Đăng nhập</a>
+          <a href="{% url 'register' %}" class="btn primary small">Đăng ký</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <section class="hero">
+      <h2>Học thuật toán trực quan qua mô phỏng và trò chơi</h2>
+      <p>Khám phá, thực hành và theo dõi tiến độ học của bạn. Phiên bản demo tĩnh không cần backend.</p>
+      <div class="row gap">
+        <a class="btn primary" href="{% url 'algorithms' %}">Xem thuật toán</a>
+        <a class="btn" href="{% url 'games' %}">Chơi thử</a>
+      </div>
+    </section>
+
+    <section>
+      <h3>Danh mục nổi bật</h3>
+      <div id="featured" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">© <span id="year"></span> SPNC Demo</div>
+  </footer>
+
+  <div id="urls" data-algorithms-url="{% url 'algorithms' %}"></div>
+
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/home.js' %}"></script>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const ROLE_LABELS = {
+      student: 'Học sinh / Sinh viên',
+      teacher: 'Giảng viên',
+      admin: 'Quản trị viên',
+    };
+
+    function showLoggedOut() {
+      document.getElementById('user-menu').style.display = 'none';
+      document.getElementById('auth-buttons').style.display = 'flex';
+    }
+
+    function showUser(user) {
+      document.getElementById('auth-buttons').style.display = 'none';
+      document.getElementById('user-menu').style.display = 'flex';
+      const firstName = user.fullname?.split(' ')[0] || user.username;
+      const roleLabel = ROLE_LABELS[user.role] || user.role || '';
+      document.getElementById('greeting').textContent = roleLabel
+        ? `Xin chào, ${firstName}! (${roleLabel})`
+        : `Xin chào, ${firstName}!`;
+    }
+
+    async function checkAuth() {
+      const stored = API.getStoredUser();
+      if (stored) {
+        showUser(stored);
+      } else {
+        showLoggedOut();
+      }
+
+      try {
+        const profile = await API.me();
+        showUser(profile);
+      } catch (_err) {
+        if (!stored) showLoggedOut();
+      }
+    }
+
+    async function logout() {
+      await API.logout();
+      location.reload();
+    }
+
+    checkAuth();
+  </script>
+</body>
+</html>
